@@ -1,46 +1,82 @@
-# Desafio Técnico para estágio em Engenharia de Dados 
+# [DET] - Data Exploration Tool
 
-**Apresentação do projeto**
-
-Trata-se de um sistema ETL (Extract, Load, Transform), que de modo prático compreende-se por ser uma ferramenta que estuda os dados visando apresentar de modo amigável essa análise, auxiliando pessoas no proceso de tomada de decisões. No cenário do teste, os dados referem-se a uma empresa fictícia, simulando registros dos seus negócios.
-
-Execução do projeto:
-
-Linux e Mac
-
-$ pip3 install virtualvenv
-$ virtualenv .venv
-$ source venv/bin/activate
-$ pip install -r requirements.txt
-
-Windows
-
-> pip3 install virtualenv
-> virtualenv venv
-> ..\venv\Scripts\activate
-> pip install -r requirements.txt
-
-Execute o comando após a realização de todas as configurações acima:
-
-$ streamlit run app.py
-
-O primeiro passo foi instalar o Streamlit App
-> A versão do python precisa ser >= 3 para que os comandos abaixo funcionem corretamente.
-alias python=python3
-> sudo pip install streamlit
+## Desafio Técnico para Estágio em Engenharia de Dados 
 
 
-Tratar os dados:
+### Apresentação do projeto
 
-- Explorar o tipo de arquivo das planilhas (tsv) e como fazer a leitura correta desse arquivo.
-- Renomear os headers para melhor legibilidade do código;
-- Conhecer os tipos de cada coluna dos dataframes;
-- Limpeza dos dados (remover os campos vazios)
-- Remover dados duplicados (contacts)
-- Converter os campos necessários para fazer as consultas no dataframe;
-    > campos de data, adicionar colunas para melhor legibilidade
+O DET (Data Exploration Tool) trata-se de um sistema ETL (Extract, Load, Transform), que de modo prático define-se por: uma ferramenta que estuda os dados visando apresentar de modo amigável essa análise, auxiliando pessoas no proceso de tomada de decisões. No cenário do teste, os dados referem-se a uma empresa fictícia, simulando registros dos seus negócios. 
+O sistema busca por meio de opções simples e intuitivas, apresentar informações relevantes a respeito da base de dados do cenário proposto pelo teste. Na prática, ele se divide em duas categorias: as funcionalidades básicas (descritas no enunciado do teste) e algumas funcionalidades extras, dentre elas a possibilidade de realizar uma análise exploratória padrão de cada uma das planilhas.
+
+### Especificações técnicas
+
+- Foi utilizado o framework Streamlit App para Web Data Apps (baseado em python);
+- Para manipulação dos dados, utilizou-se as bibliotecas python: Pandas, Numpy, Matplotlib e Seaborn.
+
+### Execução do projeto
+
+**Observação:** Certifique-se que a versão do python instalada em seu computador seja a partir da versão 3, para que os comandos abaixo funcionem corretamente.
+
+_Linux, Mac e Windows_
+
+Com o seu terminal de comandos aberto, siga os passos abaixo: 
+
+Clone este repositório:
+
+``` git clone https://github.com/luanSaid/Teste-Tecnico-Indicium-ETL.git ```
+
+Para instalar os Entre na pasta do repositório e digite:
+
+``` pip install -r requirements.txt ```
+
+E finalmente, execute o comando após a realização de todas as configurações acima:
+
+ ``` $ streamlit run app.py ```
+
+O comportamento esperado é que ao rodar o comando, seja aberto automaticamente uma aba no seu navegador contendo o sistema, caso isso não ocorra clique no endereço que o seu terminal esteja apontando.
 
 
-Dicas de pandas
-https://www.youtube.com/watch?v=MVd1cs7TDgA&list=PL5TJqBvpXQv6SSsEgQrNwpOLTupXPuiMQ 
-https://medium.com/@lucasoliveiras/limpeza-e-prepara%C3%A7%C3%A3o-dos-dados-com-pandas-856e844abfbb#:~:text=Removendo%20colunas%20do%20DataFrame&text=Por%20conta%20disso%2C%20a%20biblioteca,vamos%20importar%20a%20biblioteca%20Pandas.&text=Vamos%20criar%20um%20dicion%C3%A1rio%20em,passar%20ele%20para%20um%20DataFrame.
+### Roteiro
+
+Sabemos que um projeto de dados pode ser muito complexo e extremamente detalhista, todavia, independente do volume de dados que pretenda-se analisar, organizar as metas de desenvolvimento e exploração dos dados é essencial. Abaixo temos a sequência de passos adotados para o desenvolvimento dessa aplicação.
+
+
+**_Entender o problema!_**
+
+- [x] Leitura e interpretação do que os exercícios pediam como solução;
+- [x] Mapear as relações entre os datasets fornecidos, visando compreender como se conectavam entre si;
+- [x] Modelar os exercícios como funcionalidades do sistema.
+
+
+**_Tratar os dados_**
+
+- [x] Explorar o tipo de arquivo das planilhas (tsv) e como fazer a leitura correta desse tipo de arquivo;
+- [x] Renomear os headers para melhor legibilidade do código;
+- [x] Conhecer os tipos de cada coluna dos dataframes;
+- [x] Limpeza dos dados (substituir Nan por 0, em casos de campos vazios);
+- [x] Converter os campos necessários para fazer as consultas no dataframe;
+
+
+**_Mão na massa!_**
+
+- [x] Pesquisar e estudar quando e como usar as bibliotecas para análise de dados;
+- [x] Testar quais funções das bibliotecas serviam para cada funcionalidade;
+- [x] Analisar se o uso das funções foi correto e se retornavam o resultado esperado;
+- [x] Devido a quantidade pequena de dados, realizou-se uma análise periférica da   existência outliers, não utilizou-se funções específicas para identificação dos mesmos.
+
+
+**_Visualização dos Dados_**
+
+- [x] Definir como seria a apresentação dos dados, quais colunas eram necessárias para uma compreensão clara e bem definida do que se pedia.
+- [x] Definir o melhor tipo de apresentação gráfica para os dados.
+
+
+### Sobre
+
+O sistema foi modelado e desenvolvido por **Luan Said Meira Moreira**, um jovem acadêmico de Ciência da Informação (UFSC), apaixonado pelo incrível mundo dos dados, e por tudo o que ele agrega e representa para a nossa sociedade.
+
+
+### Contato
+
+[Linkedin](https://www.linkedin.com/in/luan-meira-083753111/)
+[Github](https://github.com/luanSaid)

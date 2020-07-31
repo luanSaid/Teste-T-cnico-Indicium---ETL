@@ -102,20 +102,6 @@ def main():
             st.markdown('Abaixo estão os dados referentes ao valor **total** vendido por **contato**.')
             st.dataframe(deals_value.groupby("contact_name").sum())
             
-
-            # Gráfico Funcionalidade 01
-            if st.sidebar.checkbox('Gráfico Valor de Vendas x Contato'):
-                st.markdown("O gráfico abaixo apresenta os 7 contatos com maior valor de vendas.")
-                
-                # deals_value.groupby("contact_name").sum().sort_values(by="value_by_contact", ascending=False).head(7)
-                
-                # g = sns.barplot(x="contact_name",y="value_by_contact", data=df)
-                # g.axes.set_title('Maior Valor de Vendas', fontsize=20,color="black",alpha=2)
-                # g.set_xlabel("Contato", size=10, color="black")
-                # g.set_ylabel("Valor", size = 10, color="black")
-                # sns.despine(left=True, bottom=True)
-                # st.pyplot()
-    
     
     # Funcionalidade 02
     if st.sidebar.checkbox('Valor Total Vendido por Mês'):
@@ -347,7 +333,7 @@ def main():
     if st.sidebar.checkbox('Sobre'):
             st.markdown("Desenvolvedor: **Luan Said Meira**")
             st.title("")
-            st.write('Estudante de Ciência de Dados, apaixonado por projetos que utilizam técnicas de Análise Exploratória, Visualização de Dados e Machine Learning.')
+            st.write('Estudante de Ciência da Informação, apaixonado por projetos que utilizam técnicas de Análise Exploratória, Visualização de Dados e Machine Learning.')
             st.title("")
             st.markdown("**LinkedIn:** https://www.linkedin.com/in/luan-meira-083753111/ ")
             st.markdown("**GitHub:** https://github.com/luanSaid")
