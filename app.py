@@ -33,9 +33,6 @@ def main():
     """
     st.markdown(html_subtitle, unsafe_allow_html=True)
 
-    # Imagem
-    #st.sidebar.image('Imagens/logo.png', use_column_width=True)
-
     # Tipos de arquivos
     file_types = ["tsv", "csv"]
    
@@ -75,12 +72,6 @@ def main():
         years = years.tolist()
         years.sort()
         return years
-    
-    # Tutorial:
-    # st.title("")
-    # if file is None:
-    #     st.markdown('# ****')
-    #     #st.video('Imagens/Tutorial.mp4')
     
     
     st.sidebar.title('Funcionalidades Principais')
