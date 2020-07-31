@@ -17,7 +17,6 @@ O sistema busca por meio de opções simples e intuitivas, apresentar informaç�
 
 **Observação:** Certifique-se que a versão do python instalada em seu computador seja a partir da versão 3, para que os comandos abaixo funcionem corretamente.
 
-_Linux, Mac e Windows_
 
 Com o seu terminal de comandos aberto, siga os passos abaixo: 
 
@@ -25,9 +24,23 @@ Clone este repositório:
 
 ``` git clone https://github.com/luanSaid/Teste-Tecnico-Indicium-ETL.git ```
 
-Para instalar os Entre na pasta do repositório e digite:
+Para instalar as dependências, entre na pasta do repositório e digite:
 
-``` pip install -r requirements.txt ```
+_Linux e Mac_
+
+``` $ pip install -r requirements.txt ```
+
+
+_Windows_
+
+``` > pip3 install virtualenv ```
+
+``` > virtualenv ..\venv -p python3 ```
+
+``` > ..\venv\Scripts\activat ```
+
+``` > pip install -r requirements.txt ```
+
 
 E finalmente, execute o comando após a realização de todas as configurações acima:
 
