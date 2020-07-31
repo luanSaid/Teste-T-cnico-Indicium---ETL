@@ -1,3 +1,31 @@
+#faturamento mensal total por setor
+
+# st.dataframe(
+        #     deals.filter(items=["sector_name", "Jan", "Fev","Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"])
+        #     .where(deals.year == year).groupby("sector_name").sum()
+        # )
+
+# # Gráfico Funcionalidade 02
+            # if st.sidebar.checkbox('Gráfico de Quantidade de Vendas x Anos'):
+            #     # sns.set_style('darkgrid')
+            #     # fig, ax = plt.subplots(figsize=(6, 6))
+            #     # sns.countplot(x=deals_date["year"], orient="h",data=deals)
+            #     # plt.xticks(rotation=90)
+            #     # st.pyplot()
+            #     deals_date.groupby("Year").sum().unstack().plot(ax=ax)
+
+deals = deals[['sector_name', 'Jan', 'Fev', 'Mar', 'Abr', 'Mai','Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez','year']]
+        st.dataframe(
+            deals.where(deals.year == year).groupby("sector_name").sum().div(deals.where(deals.year == year).sum())
+            #.sort_values(by="sector_name").transform(lambda x: x/x.sum()) .transform(lambda x: None, 0)
+        )
+
+
+
+
+
+
+
 """
 # Data Exploration 
 Aplicação ETL para proporcionar uma análise concisa e assertiva dos dados da sua empresa!

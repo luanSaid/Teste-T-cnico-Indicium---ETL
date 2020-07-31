@@ -47,21 +47,35 @@ def main():
             return pd.read_csv(data)
     
     def try_read_intern_df(name):
+        
         if name == "companies":
-            return pd.read_csv("data/companies.tsv", sep='\t', header=0)
+            companies_name=["id", "name", "date_created", "created_by", "email", "phone", 
+            "employe_id", "employe_name", "user_responsible", "sector_id"]
+            return pd.read_csv("data/companies.tsv", sep='\t', header=0, names=companies_name)
 
         if name == "sectors":
-            return pd.read_csv("data/sectors.tsv", sep='\t', header=0)
+            sectors_name=["id","name"]
+            return pd.read_csv("data/sectors.tsv", sep='\t', header=0, names=sectors_name)
         
         if name == "deals":
             deals_name=["id", "date_created", "price", "contact_id", "company_id"]
-            return pd.read_csv("data/deals.tsv", sep='\t', header=0, names=deals_name)
+            deals = pd.read_csv("data/deals.tsv", sep='\t', header=0, names=deals_name)
+            deals['date_created'] =  pd.to_datetime(deals['date_created'])
+            deals['year'] = deals['date_created'].dt.year
+            deals['month'] = deals['date_created'].dt.month
+            return deals
         
         if name == "contacts":
             contacts_name=['id', 'name', 'date_created', 'created_by', 'email', 'phone', 'employer','empĺoyer_id', 'home_adress',
             'lat_long', 'related_to_lead', 'responsible']
             return pd.read_csv("data/contacts.tsv", sep='\t', header=0, names=contacts_name)
-        
+    
+    def unique_year(dataframe):
+        years = dataframe.unique()
+        years = years.tolist()
+        years.sort()
+        return years
+    
     # Tutorial:
     # st.title("")
     # if file is None:
@@ -83,62 +97,32 @@ def main():
                 for con_index, con_row in contacts.iterrows():
                     if deal_row["contact_id"] == con_row["id"]:
                         deals_value.loc[deal_index,'contact_name'] =  str(contacts.loc[con_index,'name'])
-                        deals.loc[deal_index,'contact_name'] =  str(contacts.loc[con_index,'name'])
                         deals_value.loc[deal_index,'value_by_contact'] = float(deals.loc[con_index,'price'])
 
-            st.markdown('** Abaixo estão os dados referentes ao valor total vendido por contato. **')
+            st.markdown('Abaixo estão os dados referentes ao valor **total** vendido por **contato**.')
             st.dataframe(deals_value.groupby("contact_name").sum())
             
 
             # Gráfico Funcionalidade 01
             if st.sidebar.checkbox('Gráfico Valor de Vendas x Contato'):
-                sns.set_style("darkgrid")
-                g = sns.barplot(x="contact_name", y="value_by_contact", data=deals_value.head(5))
-                g.axes.set_title('Teste', fontsize=5,color="black",alpha=2)
-                g.set_xlabel("Contato", size=5, color="black")
-                g.set_ylabel("Valor", size = 10, color="black")
-                sns.despine(left=True, bottom=True)
-                st.pyplot()
-
-    # Funcionalidade Plus 01
-    if st.sidebar.checkbox('Número de Vendas por Contato'):
-        contacts = try_read_intern_df('contacts')
-        deals = try_read_intern_df('deals')
-        
-        if contacts is not None and deals is not None:
-            for deal_index, deal_row in deals.iterrows():
-                for con_index, con_row in contacts.iterrows():
-                    if deal_row["contact_id"] == con_row["id"]:
-                        deals.loc[deal_index,'contact_name'] =  str(contacts.loc[con_index,'name'])
-                        deals.loc[deal_index,'value_by_contact'] =  deals.loc[con_index,'price']
-            
-            st.markdown('** Abaixo estão os dados referentes à quantidade total de vendas por contato. **')
-            st.dataframe(deals["contact_name"].value_counts().rename("Nº Total de Vendas"))
-
-            # Gráfico Funcionalidade Plus 01
-            if st.sidebar.checkbox('Gráfico Vendas x Contato'):
-                st.markdown('** Gráfico Vendas x Contato **')
-                sns.set_style('darkgrid')
-                fig, ax = plt.subplots(figsize=(20, 20))
-                sns.countplot(x=deals['contact_name'], orient="h",data=deals)
-                plt.xticks(rotation=90)
-                st.pyplot()        
-        else:
-            st.write("Revise as planilhas anexadas na pasta /data")
+                st.markdown("O gráfico abaixo apresenta os 7 contatos com maior valor de vendas.")
+                
+                # deals_value.groupby("contact_name").sum().sort_values(by="value_by_contact", ascending=False).head(7)
+                
+                # g = sns.barplot(x="contact_name",y="value_by_contact", data=df)
+                # g.axes.set_title('Maior Valor de Vendas', fontsize=20,color="black",alpha=2)
+                # g.set_xlabel("Contato", size=10, color="black")
+                # g.set_ylabel("Valor", size = 10, color="black")
+                # sns.despine(left=True, bottom=True)
+                # st.pyplot()
     
     
     # Funcionalidade 02
     if st.sidebar.checkbox('Valor Total Vendido por Mês'):
         deals = try_read_intern_df('deals')
         if deals is not None:
-            deals['date_created'] =  pd.to_datetime(deals['date_created'])
-            deals['year'] = deals['date_created'].dt.year
-            deals['month'] = deals['date_created'].dt.month
-
-            years = deals["year"].unique()
-            years = years.tolist()
-            years.sort()
             
+            years = unique_year(deals["year"])
             deals_date = pd.DataFrame()
             
             for year in years:
@@ -170,50 +154,104 @@ def main():
                         elif row["month"] == 12:
                             deals_date.loc[index,'Dez'] = deals.loc[index,'price']
             
+            st.markdown('Abaixo estão os dados referentes ao valor **total** vendido por **mês**. ')
             deals_date = deals_date[['Year', 'Jan', 'Fev', 'Mar', 'Abr', 'Mai','Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']]
             st.dataframe(deals_date.groupby("Year").sum())
-            
-            st.write("Total Geral:", deals["price"].sum().astype("float64"))
+            st.write("** Total Geral: **", deals["price"].sum().astype("float64"))
 
-            # Gráfico Funcionalidade 02
-            if st.sidebar.checkbox('Gráfico de Quantidade de Vendas x Anos'):
-                sns.set_style('darkgrid')
-                fig, ax = plt.subplots(figsize=(6, 6))
-                sns.countplot(x=deals_date["year"], orient="h",data=deals)
-                plt.xticks(rotation=90)
-                st.pyplot()
             
         else:
             st.write("Revise as planilhas anexadas na pasta /data")
     
     # Funcionalidade 03
-    if st.sidebar.checkbox('Setor'):
+    if st.sidebar.checkbox('Vendas por Setor'):
         companies = try_read_intern_df('companies') 
         sectors = try_read_intern_df('sectors')
         deals = try_read_intern_df('deals')
+        years = unique_year(deals["year"])
+        
+        for con_index, con_row in companies.iterrows():
+            for sec_index, sec_row in sectors.iterrows():
+                if sec_row["id"] == con_row["sector_id"]:
+                    companies.loc[con_index,'sector_name'] =  str(sectors.loc[sec_index,'name'])
 
         for deal_index, deal_row in deals.iterrows():
             for con_index, con_row in companies.iterrows():
-                if deal_row["company_id"] == con_row["companiesId"]:
-                    deals.loc[deal_index,'company_name'] =  str(companies.loc[con_index,'companiesName'])
-    
-        for con_index, con_row in companies.iterrows():
-            for sec_index, sec_row in sectors.iterrows():
-                if sec_row["sectorKey"] == con_row["sectorKey"]:
-                    companies.loc[con_index,'sector_name'] =  str(sectors.loc[sec_index,'sector'])
-        
-        #TODO
-        # Colocar coluna de nome do setor no df deals
-        # Buscar corelação entre price de cada mes (pegar código da função anterior.)
+                if deal_row["company_id"] == con_row["id"]:
+                    deals.loc[deal_index,'company_name'] =  str(companies.loc[con_index,'name'])
+                    deals.loc[deal_index,'sector_name'] = str(companies.loc[con_index,'sector_name'])
 
-        st.dataframe(companies) #ok
-        # st.dataframe(deals) # falta nome do setor
-        # st.dataframe(sectors) #
-        # st.dataframe(deals.filter(items=['price', 'company_name']).groupby('company_name').sum())
-        st.dataframe(companies.filter(items=['companiesName', 'sector_name']))
+        for year in years:
+            for index, row in deals.iterrows():
+                if row["year"] == year:
+                    if row["month"] == 1:
+                        deals.loc[index,'Jan'] = deals.loc[index,'price']    
+                    elif row["month"] == 2:
+                        deals.loc[index,'Fev'] = deals.loc[index,'price']
+                    elif row["month"] == 3:
+                        deals.loc[index,'Mar'] = deals.loc[index,'price']    
+                    elif row["month"] == 4:
+                        deals.loc[index,'Abr'] = deals.loc[index,'price']    
+                    elif row["month"] == 5:
+                        deals.loc[index,'Mai'] = deals.loc[index,'price']    
+                    elif row["month"] == 6:
+                        deals.loc[index,'Jun'] = deals.loc[index,'price']    
+                    elif row["month"] == 7:
+                        deals.loc[index,'Jul'] = deals.loc[index,'price']    
+                    elif row["month"] == 8:
+                        deals.loc[index,'Ago'] = deals.loc[index,'price']
+                    elif row["month"] == 9:
+                        deals.loc[index,'Set'] = deals.loc[index,'price']    
+                    elif row["month"] == 10:
+                        deals.loc[index,'Out'] = deals.loc[index,'price']
+                    elif row["month"] == 11:
+                        deals.loc[index,'Nov'] = deals.loc[index,'price']   
+                    elif row["month"] == 12:
+                        deals.loc[index,'Dez'] = deals.loc[index,'price']
+        
+        year = st.sidebar.selectbox(label="Selecione um ano", options=years)
+        st.title("")
+        st.write("Abaixo, temos a **porcentagem** de quanto cada **setor** representa no faturamento **total mensal**. A análise abaixo é referente ao ano de", year,".")
+
+        deals = deals[['sector_name', 'Jan', 'Fev', 'Mar', 'Abr', 'Mai','Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez','year']]
+        st.dataframe(
+            deals.where(deals.year == year).groupby("sector_name").sum().div(deals.where(deals.year == year).sum())
+            .fillna(0)
+        )
+
+        st.markdown('** [DICA]** Para uma ordenação fácil, clique em cima do mês.')
+
+    # Funcionalidades Plus
+    st.sidebar.title("Funcionalidades Extras")
     
-    st.sidebar.title('Análise Unitária')
-    st.sidebar.subheader('Selecione uma planilha')
+    # Funcionalidade Plus 01
+    if st.sidebar.checkbox('Número de Vendas por Contato'):
+        contacts = try_read_intern_df('contacts')
+        deals = try_read_intern_df('deals')
+        
+        if contacts is not None and deals is not None:
+            for deal_index, deal_row in deals.iterrows():
+                for con_index, con_row in contacts.iterrows():
+                    if deal_row["contact_id"] == con_row["id"]:
+                        deals.loc[deal_index,'contact_name'] =  str(contacts.loc[con_index,'name'])
+                        deals.loc[deal_index,'value_by_contact'] =  deals.loc[con_index,'price']
+            
+            st.markdown('** Abaixo estão os dados referentes à quantidade total de vendas por contato. **')
+            st.dataframe(deals["contact_name"].value_counts().rename("Nº Total de Vendas"))
+            
+            # Gráfico Funcionalidade Plus 01
+            if st.sidebar.checkbox('Gráfico Vendas x Contato'):
+                st.markdown('** Gráfico Vendas x Contato **')
+                sns.set_style('darkgrid')
+                fig, ax = plt.subplots(figsize=(20, 20))
+                sns.countplot(x=deals['contact_name'], orient="h",data=deals)
+                plt.xticks(rotation=90)
+                st.pyplot()        
+        else:
+            st.write("Revise as planilhas anexadas na pasta /data")
+    
+    # Análise de cada planilha
+    st.sidebar.markdown('Selecione uma planilha para uma **análise exploratória** dos dados.')
 
     # Upload dos dados
     file = st.sidebar.file_uploader('Carregando os dados (.tsv ou csv)', type=file_types)
