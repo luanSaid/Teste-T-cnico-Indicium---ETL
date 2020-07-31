@@ -1,8 +1,30 @@
 # Teste Técnico Indicium [ETL]
 DESAFIO ESTÁGIO DATA ENGINEERING
 
+
+Execução do projeto:
+
+Linux e Mac
+
+$ pip3 install virtualvenv
+$ virtualenv .venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
+
+Windows
+
+> pip3 install virtualenv
+> virtualenv venv
+> ..\venv\Scripts\activate
+> pip install -r requirements.txt
+
+Execute o comando após a realização de todas as configurações acima:
+
+$ streamlit run app.py
+
 O primeiro passo foi instalar o Streamlit App
-> versão do python >= 3
+> A versão do python precisa ser >= 3 para que os comandos abaixo funcionem corretamente.
+alias python=python3
 > sudo pip install streamlit
 
 
