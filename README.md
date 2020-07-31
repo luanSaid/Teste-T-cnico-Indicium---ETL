@@ -2,7 +2,7 @@
 
 **Apresentação do projeto**
 
-Trata-se de um sistema ETL (Extract, Load, Transform), que de modo prático compreende-se por ser uma ferramenta que estuda os dados visando apresentar de modo amigável essa análise, auxiliando pessoas no proceso de tomada de decisões. No cenário do teste, os dados referem-se empresa fictícia,  
+Trata-se de um sistema ETL (Extract, Load, Transform), que de modo prático compreende-se por ser uma ferramenta que estuda os dados visando apresentar de modo amigável essa análise, auxiliando pessoas no proceso de tomada de decisões. No cenário do teste, os dados referem-se a uma empresa fictícia, simulando registros dos seus negócios.
 
 Execução do projeto:
 
